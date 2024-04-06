@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wszystkie ksiazki</title>
+</head>
+<body>
+{% if books %}
+    <ul>
+    {% for book in books %}
+        <li><a href="/book/details/{{ book.id }}/">{{ book.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Brak książek w bazie danych.</p>
+{% endif %}
+</body>
+</html>
