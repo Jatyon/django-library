@@ -1,0 +1,27 @@
+{% extends 'book/main.html' %}
+
+{% block title %} Lista wszystkich Książek w bazie {% endblock %}
+
+{% block page %}
+
+{% if user.is_authenticated %}
+Witaj {{ user.username }}<br>
+<a href="{% url 'logout' %}">Logout</a>
+{% else %}
+<a href="{% url 'login' %}">Login</a>
+{% endif %}
+<hr>
+
+<a href="{% url 'create_book' %}">Nowa książka</a>
+{% if books %}
+<ul>
+    {% for book in books %}
+    <li><a href="{% url 'one_book' book.id %}">{{ book.title }}</a></li>
+    <a href="{% url 'edit_book' book.id %}">Edytuj książkę</a>
+    <a href="{% url 'delete_book' book.id %}">Usuń książkę</a>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Brak książek w bazie danych.</p>
+{% endif %}
+{% endblock %}

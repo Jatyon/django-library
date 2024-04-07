@@ -1,0 +1,15 @@
+{% extends 'book/main.html' %}
+
+{% block title %} Usuwanie wskazanych książek z bazy {% endblock %}
+
+{% block page %}
+
+<h1>Czy na pewno chcesz usunąć z bazy Książkę {{ book.title }} ?</h1>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Usuń książkę</button>
+</form>
+
+<a href="{% url 'all_books' %}">Cofnij</a>
+
+{% endblock %}

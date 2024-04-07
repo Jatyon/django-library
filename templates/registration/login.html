@@ -1,0 +1,13 @@
+{% extends 'book/main.html' %}
+
+{% block title %} LOGIN {% endblock %}
+
+{% block page %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Zaloguj</button>
+</form>
+
+{% endblock %}

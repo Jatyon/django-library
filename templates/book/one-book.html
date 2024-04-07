@@ -1,0 +1,23 @@
+{% extends 'book/main.html' %}
+
+{% block title %} Szczegółowy widok wskazanej książki w bazie {% endblock %}
+
+{% block page %}
+
+<h1>{{ book.title }}</h1>
+<ul>
+    <li>Rok Wydania: {{ book.publication_year }}</li>
+    {% if book.extrainfo %}
+    <li>Dodatkowe informacje: {{ book.extra_info }} </li>
+    {% endif %}
+    <li>Kategoria: {{ book.category.name }}</li>
+    {% for author in book.authors.all %}
+    <li>Autor: {{ author.first_name }} {{ author.last_name }} ur. {{ author.date_of_birth }}</li>
+    {% endfor %}
+
+</ul>
+</body>
+
+<a href="{% url 'all_books' %}">Cofnij</a>
+
+{% endblock %}

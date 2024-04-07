@@ -1,0 +1,15 @@
+{% extends 'book/main.html' %}
+
+{% block title %} Edycja i dodawanie książek {% endblock %}
+
+{% block page %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Wyślij dane</button>
+</form>
+
+<a href="{% url 'all_books' %}">Cofnij</a>
+
+{% endblock %}
