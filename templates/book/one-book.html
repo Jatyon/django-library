@@ -8,11 +8,13 @@
 <ul>
     <li>Rok Wydania: {{ book.publication_year }}</li>
     {% if book.extrainfo %}
-    <li>Dodatkowe informacje: {{ book.extra_info }} </li>
+    <li>Dodatkowe informacje: {{ book.extrainfo }} </li>
     {% endif %}
-    <li>Kategoria: {{ book.category.name }}</li>
-    {% for author in book.authors.all %}
-    <li>Autor: {{ author.first_name }} {{ author.last_name }} ur. {{ author.date_of_birth }}</li>
+    {% for review in book.review_set.all %}
+    <li>Ocena: {{ review.rate }}, recenzja: {{ review.notice }}</li>
+    {% endfor %}
+    {% for author in book.author_set.all %}
+    <li>Autor: {{ author.first_name }} {{ author.last_name }}</li>
     {% endfor %}
 
 </ul>

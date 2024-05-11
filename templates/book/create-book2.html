@@ -8,6 +8,9 @@
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form|bootstrap}}
+    {{ form_einfo|bootstrap}}
+    {{ form_review|bootstrap}}
+    {{ form_author|bootstrap}}
     <button type="submit">Wyślij dane</button>
 </form>
 

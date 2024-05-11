@@ -12,16 +12,18 @@ Witaj {{ user.username }}<br>
 {% endif %}
 <hr>
 
-<a href="{% url 'create_book' %}">Nowa książka</a>
+<a href="{% url 'create_book2' %}">Nowa książka</a>
+
 {% if books %}
 <ul>
     {% for book in books %}
     <li><a href="{% url 'one_book' book.id %}">{{ book.title }}</a></li>
-    <a href="{% url 'edit_book' book.id %}">Edytuj książkę</a>
+    <a href="{% url 'edit_book2' book.id %}">Edytuj książkę</a>
     <a href="{% url 'delete_book' book.id %}">Usuń książkę</a>
     {% endfor %}
 </ul>
 {% else %}
 <p>Brak książek w bazie danych.</p>
 {% endif %}
+
 {% endblock %}
