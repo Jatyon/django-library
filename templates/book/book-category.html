@@ -1,6 +1,6 @@
 {% extends 'book/main.html' %}
 
-{% block title %} Lista wszystkich Książek w bazie {% endblock %}
+{% block title %} Lista Ksiązek w/g kategorii {% endblock %}
 
 {% block page %}
 
@@ -18,14 +18,24 @@ Witaj {{ user.username }}<br>
 
 {% if books %}
 <ul>
-    {% for book in books %}
-    <li><a href="{% url 'one_book' book.id %}">{{ book.title }}</a></li>
-    <a href="{% url 'edit_book2' book.id %}">Edytuj książkę</a>
-    <a href="{% url 'delete_book' book.id %}">Usuń książkę</a>
+    {% for book in book_all %}
+    <li>{{ book|first }}: {{ book|last }}</li>
     {% endfor %}
 </ul>
-{% else %}
-<p>Brak książek w bazie danych.</p>
-{% endif %}
+<ul>
+    {% for book in book_none %}
+    <li>{{ book|first }}: {{ book|last }}</li>
+    {% endfor %}
+</ul>
 
+<ul>
+    {% for book in books %}
+    <li> {{ book|first }}: {{ book|last }}</li>
+    {% endfor %}
+</ul>
+
+
+{% else %}
+<p>Brak ksiązek o określonych kategoriach.</p>
+{% endif %}
 {% endblock %}

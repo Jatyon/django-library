@@ -4,7 +4,7 @@ from books.models import Book, ExtraInfo, Review, Author
 from books.forms import BookForm, BookFormNew, ReviewForm2, ExtraInfoForm2, AuthorForm2
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required,permission_required
-
+from django.db.models import Count, Sum, Avg, Max, Min, Q
 
 def all_books(request):
     books=Book.objects.all()
@@ -24,8 +24,8 @@ def one_book(request, book_id):
     return render(request, 'book/one-book.html', {'book': book, 'field_names': field_names})
 
 @login_required
-@permission_required("filmy.add_film")
-def nowy_nowy(request):
+@permission_required("books.add_book")
+def create_over_2000(request):
     form = BookFormNew(request.POST or None)
     if form.is_valid():
         form.save()
@@ -77,10 +77,9 @@ def edit_book(request, book_id):
 @permission_required("books.change_book")
 def edit_book2(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
-    extra_info = get_object_or_404(ExtraInfo, pk=book_id)
-    extra_info = get_object_or_404(ExtraInfo, pk=book_id)
-    review = get_object_or_404(Review, pk=book_id)
-    author = get_object_or_404(Author, pk=book_id)
+    extra_info = get_object_or_404(ExtraInfo, book=book_id)
+    review = get_object_or_404(Review, book=book_id)
+    author = get_object_or_404(Author, books=book_id)
     form = BookForm(request.POST or None, instance=book)
     form_einfo = ExtraInfoForm2(request.POST or None,  instance=extra_info)
     form_review = ReviewForm2(request.POST or None, instance=review)
@@ -112,3 +111,45 @@ def delete_book(request, book_id):
 def logout_view(request):
   logout(request)
   return HttpResponseRedirect('/login')
+
+
+@login_required
+def books_category(request):
+   books = Book.objects.all()
+   booksNone = Book.objects.filter(extrainfo__category__isnull=True)
+   category = ExtraInfo.CATEGORY
+   context = {'books': books, 'category':category, 'booksNone':booksNone}
+   return render(request, 'book/book-category.html', context)
+
+@login_required
+def stat_books(request):
+    category = ExtraInfo.CATEGORY
+    # Wszystkie Booky
+    w =  Book.objects.all().aggregate(Count('id'))
+    all = w['id__count']
+    # Liczba Booków bez określonego gatunku
+    f = Book.objects.filter(extrainfo__category__isnull=True).aggregate(Count('id'))
+    s = f['id__count']
+    f0 = Book.objects.filter(extrainfo__category__exact=0).aggregate(Count('id'))
+    s0 = f0['id__count']
+    f1 = Book.objects.filter(extrainfo__category__exact=1).aggregate(Count('id'))
+    s1 = f1['id__count']
+    f2 = Book.objects.filter(extrainfo__category__exact=2).aggregate(Count('id'))
+    s2 = f2['id__count']
+    f3 = Book.objects.filter(extrainfo__category__exact=3).aggregate(Count('id'))
+    s3 = f3['id__count']
+
+    book_all = {('Wszystkie książki',all)}
+    book_none = {('Ksiązki bez określonej kategorii', s)}
+    books = {('Ksiązki z kategorii Dramat', s0),
+             ('Ksiązki z kategorii Sci-fi', s1),
+             ('Ksiązki z kategorii Naukowa', s2),
+             ('Ksiązki z kategorii Powiesc', s3)}
+    context = {'book_all':book_all, 'book_none':book_none, 'books':books, 'category':category}
+    return render(request, 'book/book-category.html', context)
+
+@login_required
+def authors_by_books(request):
+    authors = Author.objects.all().annotate(l_books=Count('books')).order_by("-l_books")
+    context = {'authors':authors}
+    return render(request, 'book/stat-authors.html', context)

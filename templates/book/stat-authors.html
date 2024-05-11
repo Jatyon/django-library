@@ -1,6 +1,6 @@
 {% extends 'book/main.html' %}
 
-{% block title %} Lista wszystkich Książek w bazie {% endblock %}
+{% block title %} Lista autorów w/g liczby książek {% endblock %}
 
 {% block page %}
 
@@ -16,16 +16,14 @@ Witaj {{ user.username }}<br>
 <a href="{% url 'create_over_2000' %}">Nowa ksiązka nie starsza niż 2000 rok</a>&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="{% url 'create_book2' %}">Nowa ksiązka z kompletem informacji</a>
 
-{% if books %}
+{% if authors %}
 <ul>
-    {% for book in books %}
-    <li><a href="{% url 'one_book' book.id %}">{{ book.title }}</a></li>
-    <a href="{% url 'edit_book2' book.id %}">Edytuj książkę</a>
-    <a href="{% url 'delete_book' book.id %}">Usuń książkę</a>
+    {% for author in authors %}
+    <li> {{ author.first_name }} {{ author.last_name }}: napisał {{author.l_books}} książki</li>
     {% endfor %}
 </ul>
-{% else %}
-<p>Brak książek w bazie danych.</p>
-{% endif %}
 
+{% else %}
+<p>Brak autorów w bazie.</p>
+{% endif %}
 {% endblock %}
