@@ -26,4 +26,5 @@ Witaj {{ user.username }}<br>
 {% else %}
 <p>Brak autorów w bazie.</p>
 {% endif %}
+<a href="{% url 'all_books' %}">Cofnij</a>
 {% endblock %}

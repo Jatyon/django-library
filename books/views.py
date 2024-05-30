@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404,redirect
+from django.shortcuts import render, get_object_or_404,get_list_or_404, redirect
 from django.http import HttpResponseRedirect
 from books.models import Book, ExtraInfo, Review, Author
 from books.forms import BookForm, BookFormNew, ReviewForm2, ExtraInfoForm2, AuthorForm2
@@ -78,12 +78,13 @@ def edit_book(request, book_id):
 def edit_book2(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
     extra_info = get_object_or_404(ExtraInfo, book=book_id)
-    review = get_object_or_404(Review, book=book_id)
-    author = get_object_or_404(Author, books=book_id)
+    review = get_list_or_404(Review, book=book_id)
+    author = get_list_or_404(Author, books=book_id)
+
     form = BookForm(request.POST or None, instance=book)
     form_einfo = ExtraInfoForm2(request.POST or None,  instance=extra_info)
-    form_review = ReviewForm2(request.POST or None, instance=review)
-    form_author = AuthorForm2(request.POST or None, instance=author)
+    form_review = ReviewForm2(request.POST or None, instance=review[0])
+    form_author = AuthorForm2(request.POST or None, instance=author[0])
     if all([form.is_valid(), form_einfo.is_valid(), form_review.is_valid(), form_author.is_valid()]):
         book = form.save()
         einfo = form_einfo.save(commit=False)
@@ -119,6 +120,7 @@ def books_category(request):
    booksNone = Book.objects.filter(extrainfo__category__isnull=True)
    category = ExtraInfo.CATEGORY
    context = {'books': books, 'category':category, 'booksNone':booksNone}
+   print(context)
    return render(request, 'book/book-category.html', context)
 
 @login_required
@@ -145,8 +147,8 @@ def stat_books(request):
              ('Ksiązki z kategorii Sci-fi', s1),
              ('Ksiązki z kategorii Naukowa', s2),
              ('Ksiązki z kategorii Powiesc', s3)}
-    context = {'book_all':book_all, 'book_none':book_none, 'books':books, 'category':category}
-    return render(request, 'book/book-category.html', context)
+    context = {'bookAll':book_all, 'bookNone':book_none, 'books':books, 'category':category}
+    return render(request, 'book/stat-books.html', context)
 
 @login_required
 def authors_by_books(request):

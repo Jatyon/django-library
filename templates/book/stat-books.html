@@ -1,6 +1,6 @@
 {% extends 'book/main.html' %}
 
-{% block title %} Lista Ksiązek w/g kategorii {% endblock %}
+{% block title %} Lista autorów w/g liczby książek {% endblock %}
 
 {% block page %}
 
@@ -17,32 +17,26 @@ Witaj {{ user.username }}<br>
 <a href="{% url 'create_book2' %}">Nowa ksiązka z kompletem informacji</a>
 
 {% if books %}
-{% for c in category %}
-<p>
-<h4>{{ c|last }}</h4>
-</p>
 <ul>
-    {% for book in books %}
-    {% if book.extrainfo.category == c|first %}
-    <li> {{ book.title }} ({{ book.publication_year }})</li>
-    {% endif %}
+    {% for book in bookAll %}
+    <li>{{ book|first }}: {{ book|last }}</li>
     {% endfor %}
 </ul>
-{% endfor %}
-
-<p>
-<h4>Książki bez określonej kategorii</h4>
-</p>
-{% for bookN in booksNone %}
 <ul>
-    <li> {{ bookN.title }} ({{ bookN.publication_year }})</li>
+    {% for book in bookNone %}
+    <li>{{ book|first }}: {{ book|last }}</li>
+    {% endfor %}
 </ul>
-{% endfor %}
 
-
+<ul>
+    {% for book in books %}
+    <li> {{ book|first }}: {{ book|last }}</li>
+    {% endfor %}
+</ul>
 
 {% else %}
-<p>Brak ksiązek o określonych kategoriach.</p>
+<p>Brak autorów w bazie.</p>
 {% endif %}
+
 <a href="{% url 'all_books' %}">Cofnij</a>
 {% endblock %}

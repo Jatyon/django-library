@@ -10,7 +10,7 @@ urlpatterns = [
     # path('edit/<int:book_id>/', edit_book, name='edit_book'),
     path('edit/<int:book_id>/', edit_book2, name='edit_book2'),
     path('delete/<int:book_id>/', delete_book, name='delete_book'),
-    path('books_category/', books_category, name='books_category'),
-    path('stat_books/', stat_books, name='stat_books'),
+    path('books-category/', books_category, name='books_category'),
+    path('stat-books/', stat_books, name='stat_books'),
     path('stat-authors/', authors_by_books, name='authors_by_books'),
 ]
