@@ -27,10 +27,23 @@ def one_book(request, book_id):
 @permission_required("books.add_book")
 def create_over_2000(request):
     form = BookFormNew(request.POST or None)
-    if form.is_valid():
-        form.save()
+    form_einfo = ExtraInfoForm2(request.POST or None)
+    form_review = ReviewForm2(request.POST or None)
+    form_author = AuthorForm2(request.POST or None)
+    if all([form.is_valid(), form_einfo.is_valid(), form_review.is_valid(), form_author.is_valid()]):
+        book = form.save()
+        einfo = form_einfo.save(commit=False)
+        einfo.book = book
+        einfo.save()
+        review = form_review.save(commit=False)
+        review.book = book
+        review.save()
+        author = form_author.save()
+        author.books.add(book.id)
+        author.save()
         return redirect(all_books)
-    return render(request, 'book/create-book.html', {'form': form})
+    
+    return render(request, 'book/create-book2.html', {'form': form, 'form_einfo':form_einfo, 'form_review': form_review, 'form_author': form_author})
 
 @login_required
 @permission_required("books.add_book")
@@ -126,10 +139,8 @@ def books_category(request):
 @login_required
 def stat_books(request):
     category = ExtraInfo.CATEGORY
-    # Wszystkie Booky
     w =  Book.objects.all().aggregate(Count('id'))
     all = w['id__count']
-    # Liczba Booków bez określonego gatunku
     f = Book.objects.filter(extrainfo__category__isnull=True).aggregate(Count('id'))
     s = f['id__count']
     f0 = Book.objects.filter(extrainfo__category__exact=0).aggregate(Count('id'))

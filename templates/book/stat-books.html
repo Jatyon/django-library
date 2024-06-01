@@ -12,9 +12,12 @@ Witaj {{ user.username }}<br>
 {% endif %}
 <hr>
 
-<a href="{% url 'create_book' %}">Nowa ksiązka</a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="{% url 'create_book2' %}">Nowa ksiązka</a>&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="{% url 'create_over_2000' %}">Nowa ksiązka nie starsza niż 2000 rok</a>&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="{% url 'create_book2' %}">Nowa ksiązka z kompletem informacji</a>
+<br>
+<a href="{% url 'books_category' %}">Książki po kategoriach</a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="{% url 'stat_books' %}">Statystyki książek</a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="{% url 'authors_by_books' %}">Książki i autorzy</a>
 
 {% if books %}
 <ul>
