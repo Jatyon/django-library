@@ -154,10 +154,10 @@ def stat_books(request):
 
     book_all = {('Wszystkie książki',all)}
     book_none = {('Ksiązki bez określonej kategorii', s)}
-    books = {('Ksiązki z kategorii Dramat', s0),
-             ('Ksiązki z kategorii Sci-fi', s1),
-             ('Ksiązki z kategorii Naukowa', s2),
-             ('Ksiązki z kategorii Powiesc', s3)}
+    books = {('Ksiązki z kategorii Powiesc', s0),
+             ('Ksiązki z kategorii Naukowa', s1),
+             ('Ksiązki z kategorii Sci-fi', s2),
+             ('Ksiązki z kategorii Dramat', s3)}
     context = {'bookAll':book_all, 'bookNone':book_none, 'books':books, 'category':category}
     return render(request, 'book/stat-books.html', context)
 
